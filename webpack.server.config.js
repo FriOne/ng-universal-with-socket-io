@@ -5,7 +5,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    server: './server.ts',
+    server: './server/index.ts',
   },
   target: 'node',
   resolve: { extensions: ['.ts', '.js'] },
@@ -25,13 +25,13 @@ module.exports = {
     new webpack.ContextReplacementPlugin(
       // fixes WARNING Critical dependency: the request of a dependency is an expression
       /(.+)?angular(\\|\/)core(.+)?/,
-      path.join(__dirname, 'src'), // location of your src
+      path.join(__dirname, 'client'), // location of your client
       {} // a map of your routes
     ),
     new webpack.ContextReplacementPlugin(
       // fixes WARNING Critical dependency: the request of a dependency is an expression
       /(.+)?express(\\|\/)(.+)?/,
-      path.join(__dirname, 'src'),
+      path.join(__dirname, 'client'),
       {}
     )
   ]
