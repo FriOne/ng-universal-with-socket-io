@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { SocketIo } from 'ng-io';
 
 @Component({
   selector: 'home',
@@ -8,7 +8,9 @@ import { Observable } from 'rxjs/Observable';
 export class HomeComponent implements OnInit {
   public message: string;
 
-  constructor() {}
+  constructor(
+    private socket: SocketIo
+  ) {}
 
   ngOnInit() {
     this.message = 'Hello';

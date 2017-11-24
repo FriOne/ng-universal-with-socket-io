@@ -4,7 +4,9 @@ import { renderModuleFactory } from '@angular/platform-server';
 import { enableProdMode } from '@angular/core';
 
 import * as express from 'express';
+import * as socketIo from 'socket.io';
 import { join } from 'path';
+import { Server } from 'http';
 import { readFileSync } from 'fs';
 
 // Faster server renders w/ Prod mode (dev mode never needed)
@@ -12,6 +14,17 @@ enableProdMode();
 
 // Express server
 const app = express();
+const server = new Server(app);
+const io = socketIo(server as any, {
+  serveClient: false,
+  wsEngine: 'ws',
+} as any);
+io.on('connection', (socket) => {
+  socket.emit('news', {hello: 'world'});
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
 
 const PORT = process.env.PORT || 4000;
 const DIST_FOLDER = join(process.cwd(), 'dist');
@@ -53,6 +66,6 @@ app.get('*', (req, res) => {
 });
 
 // Start up the Node server
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Node Express server listening on http://localhost:${PORT}`);
 });
