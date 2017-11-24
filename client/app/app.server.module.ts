@@ -9,8 +9,8 @@ import { AppComponent } from './app.component';
 @NgModule({
   imports: [
     AppModule,
-    NoopAnimationsModule,
     ServerModule,
+    NoopAnimationsModule,
     ModuleMapLoaderModule,
   ],
   bootstrap: [AppComponent],

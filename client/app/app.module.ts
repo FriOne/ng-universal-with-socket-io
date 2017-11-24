@@ -11,14 +11,12 @@ import { HomeComponent } from './home/home.component';
     HomeComponent,
   ],
   imports: [
-    BrowserModule.withServerTransition({appId: 'my-app'}),
+    BrowserModule.withServerTransition({appId: 'test-app'}),
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full'},
       { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule'},
       { path: 'lazy/nested', loadChildren: './lazy/lazy.module#LazyModule'}
-    ])
+    ]),
   ],
-  providers: [],
-  bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
