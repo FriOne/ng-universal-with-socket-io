@@ -6,7 +6,7 @@ import { NgIoConfig, NgIoModule } from 'ng-io';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 
-const socketConfig: NgIoConfig = {url: 'http://localhost:4000'};
+export const socketConfig: NgIoConfig = {url: 'http://localhost:4000', connectOnAppLoad: true};
 
 @NgModule({
   declarations: [

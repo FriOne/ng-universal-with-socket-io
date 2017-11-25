@@ -2,6 +2,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   entry: {
@@ -10,7 +11,7 @@ module.exports = {
   target: 'node',
   resolve: { extensions: ['.ts', '.js'] },
   // Make sure we include all node_modules etc
-  externals: [/(node_modules|main\..*\.js)/],
+  externals: [/(node_modules|main\..*\.js)/, nodeExternals()],
   output: {
     // Puts the output at the root of the dist folder
     path: path.join(__dirname, 'dist'),
@@ -25,6 +26,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.IgnorePlugin(/uws/, /node_modules\/uws/),
     new webpack.ContextReplacementPlugin(
       // fixes WARNING Critical dependency: the request of a dependency is an expression
       /(.+)?angular(\\|\/)core(.+)?/,
@@ -39,7 +41,7 @@ module.exports = {
     ),
     new webpack.ContextReplacementPlugin(
       // fixes WARNING Critical dependency: the request of a dependency is an expression
-      /(.+)?(socket\.io)|(bindings)|(uws)(\\|\/)(.+)?/,
+      /(.+)?socket\.io(\\|\/)(.+)?/,
       path.join(__dirname, 'client'),
       {}
     )
