@@ -25,7 +25,7 @@ export const socketConfig: NgIoConfig = {url: 'http://localhost:4000', connectOn
       { path: '', component: HomeComponent, pathMatch: 'full'},
       { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule'},
       { path: 'lazy/nested', loadChildren: './lazy/lazy.module#LazyModule'}
-    ]),
+    ], {initialNavigation: 'enabled'}),
   ],
 })
 export class AppModule {}
