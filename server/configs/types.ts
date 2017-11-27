@@ -1,5 +1,5 @@
 const TYPES = {
-  Controller: Symbol('Controller'),
+  SocketIo: Symbol('SocketIo'),
 };
 
 export default TYPES;

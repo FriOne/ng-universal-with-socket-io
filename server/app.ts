@@ -12,23 +12,29 @@ import { readFileSync } from 'fs';
 import { InversifyExpressServer } from 'inversify-express-utils';
 
 import './controllers/test.controller';
-import container from './configs/inversify.config';
+import { container } from './configs/inversify.config';
+import TYPES from './configs/types';
 
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
 export class App {
   app: express.Application;
   server: Server;
+  io: SocketIO.Server;
   inversifyServer: InversifyExpressServer;
 
   constructor() {
     enableProdMode();
 
     this.inversifyServer = new InversifyExpressServer(container);
-    this.inversifyServer.setConfig(app => this.inversifyConfig(app));
+    this.inversifyServer.setConfig(app => this.investifyConfig(app));
     this.app = this.inversifyServer.build();
 
     this.angularSSRConfig();
+  }
+
+  investifyConfig(app: express.Application) {
+
   }
 
   angularSSRConfig() {
@@ -47,21 +53,13 @@ export class App {
     this.app.get('*', (req, res) => res.render('index', {req}));
   }
 
-  inversifyConfig(app: express.Application) {
-
-  }
-
   connectSocketIo() {
-    const io = socketIo(this.server, {
+    this.io = socketIo(this.server, {
       serveClient: false,
       wsEngine: 'ws',
     } as any);
-    io.on('connection', (socket) => {
-      socket.emit('news', {hello: 'world'});
-      socket.on('my other event', function (data) {
-        console.log(data);
-      });
-    });
+
+    container.bind<SocketIO.Server>(TYPES.SocketIo).toConstantValue(this.io);
   }
 
   run(port: number) {

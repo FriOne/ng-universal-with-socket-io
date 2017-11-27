@@ -8,8 +8,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { SharedModule } from './modules/shared/shared.module';
 
-
-export const socketConfig: NgIoConfig = {url: 'http://localhost:4000', connectOnAppLoad: false};
+export const socketConfig: NgIoConfig = {url: 'http://localhost:4000'};
 
 @NgModule({
   declarations: [
