@@ -12,8 +12,8 @@ import { readFileSync } from 'fs';
 import { InversifyExpressServer } from 'inversify-express-utils';
 
 import './controllers/test.controller';
-import { container } from './configs/inversify.config';
-import TYPES from './configs/types';
+import { container } from './di/inversify.config';
+import TYPES from './di/types';
 
 const DIST_FOLDER = join(process.cwd(), 'dist');
 

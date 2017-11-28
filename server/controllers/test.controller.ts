@@ -1,8 +1,8 @@
 import { Request } from 'express';
 import { controller, httpGet } from 'inversify-express-utils';
 
-import TYPES from '../configs/types';
-import { lazyInject } from '../configs/inversify.config';
+import TYPES from '../di/types';
+import { lazyInject } from '../di/inversify.config';
 
 @controller('/api/test')
 export class TestController {
