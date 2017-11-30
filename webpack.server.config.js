@@ -1,17 +1,15 @@
-// Work around for https://github.com/angular/angular-cli/issues/7200
-
 const path = require('path');
 const webpack = require('webpack');
-const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   entry: {
     server: './server/index.ts',
   },
   target: 'node',
-  resolve: { extensions: ['.ts', '.js'] },
-  // Make sure we include all node_modules etc
-  externals: [/(node_modules|main\..*\.js)/, nodeExternals()],
+  resolve: {
+    extensions: ['.ts', '.js']
+  },
+  externals: [/(node_modules|main\..*\.js)/],
   output: {
     // Puts the output at the root of the dist folder
     path: path.join(__dirname, 'dist'),
@@ -26,7 +24,15 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.IgnorePlugin(/uws/, /node_modules\/uws/),
+    new webpack.IgnorePlugin(/^uws$/),
+    // new webpack.IgnorePlugin(/^redis$/),
+    // new webpack.IgnorePlugin(/^sqlite3$/),
+    // new webpack.IgnorePlugin(/^oracledb$/),
+    // new webpack.IgnorePlugin(/^mssql$/),
+    // new webpack.IgnorePlugin(/^mysql$/),
+    // new webpack.IgnorePlugin(/^mysql2$/),
+    // new webpack.IgnorePlugin(/^mongodb$/),
+    new webpack.IgnorePlugin(/pg\.js/),
     new webpack.ContextReplacementPlugin(
       // fixes WARNING Critical dependency: the request of a dependency is an expression
       /(.+)?angular(\\|\/)core(.+)?/,
@@ -44,6 +50,10 @@ module.exports = {
       /(.+)?socket\.io(\\|\/)(.+)?/,
       path.join(__dirname, 'client'),
       {}
-    )
+    ),
+    new webpack.NormalModuleReplacementPlugin(
+      /.*PlatformTools.*/,
+      path.resolve(__dirname, 'server/typeorm/PlatformTools.ts')
+    ),
   ]
 }
