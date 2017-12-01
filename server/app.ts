@@ -5,11 +5,9 @@ import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 import { Connection, createConnection, getRepository } from 'typeorm';
 
 import * as express from 'express';
-import * as socketIo from 'socket.io';
 import { join } from 'path';
 import { Server } from 'http';
 import { readFileSync } from 'fs';
-import * as md5 from 'md5';
 
 import { InversifyExpressServer } from 'inversify-express-utils';
 
@@ -19,29 +17,32 @@ import TYPES from './di/types';
 
 import { ormConfig } from '../ormconfig';
 import { User } from './entities/user.entity';
+import { getSocketServer } from './socket/socket-server';
 
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
 export class App {
   app: express.Application;
   server: Server;
-  io: SocketIO.Server;
-  inversifyServer: InversifyExpressServer;
+  socketServer: any;
 
-  constructor() {
-    enableProdMode();
+  async connectDb() {
+    const connection = await createConnection(ormConfig as any);
+    const userRepository = getRepository(User);
 
-    this.inversifyServer = new InversifyExpressServer(container);
-    this.inversifyServer.setConfig(app => this.investifyConfig(app));
-    this.app = this.inversifyServer.build();
-
-    this.angularSSRConfig();
-    this.initDb();
+    container.bind<Connection>(TYPES.DbConnection).toConstantValue(connection);
   }
 
-  async initDb() {
-    const connection: Connection = await createConnection(ormConfig as any);
-    const userRepository = getRepository(User);
+  async init() {
+    enableProdMode();
+
+    this.bindSocketServer();
+
+    const inversifyServer = new InversifyExpressServer(container);
+    inversifyServer.setConfig(app => this.investifyConfig(app));
+    this.app = inversifyServer.build();
+
+    this.angularSSRConfig();
   }
 
   investifyConfig(app: express.Application) {
@@ -64,19 +65,21 @@ export class App {
     this.app.get('*', (req, res) => res.render('index', {req}));
   }
 
-  connectSocketIo() {
-    this.io = socketIo(this.server, {
-      serveClient: false,
-      wsEngine: 'ws',
-    } as any);
-
-    container.bind<SocketIO.Server>(TYPES.SocketIo).toConstantValue(this.io);
+  bindSocketServer() {
+    this.socketServer = getSocketServer();
+    container.bind<SocketIO.Server>(TYPES.SocketIo).toConstantValue(this.socketServer);
   }
 
   run(port: number) {
     this.server = this.app.listen(port, () => {
       console.log(`Node Express server listening on http://localhost:${port}`);
     });
-    this.connectSocketIo();
+    this.socketServer.connect(this.server);
+    this.socketServer.on('connection', socket => {
+      console.log('Socket connected');
+      socket.on('test', () => {
+        console.log('Socket test successful');
+      });
+    });
   }
 }

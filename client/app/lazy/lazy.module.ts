@@ -1,11 +1,21 @@
 import {NgModule, Component} from '@angular/core'
 import {RouterModule} from '@angular/router'
+import { SocketIo } from 'ng-io';
 
 @Component({
   selector: 'lazy-view',
-  template: `<h3>i'm lazy</h3>`
+  template: `<h3 (click)="onClick()">i'm lazy</h3>`
 })
-export class LazyComponent {}
+export class LazyComponent {
+
+  constructor(
+    private socket: SocketIo
+  ) {}
+
+  onClick() {
+    this.socket.emit('test', {test: 'Socket!'});
+  }
+}
 
 @NgModule({
   declarations: [LazyComponent],
@@ -15,6 +25,4 @@ export class LazyComponent {}
     ])
   ]
 })
-export class LazyModule {
-
-}
+export class LazyModule {}

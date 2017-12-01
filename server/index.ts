@@ -4,5 +4,25 @@ import 'reflect-metadata';
 import { App } from './app';
 
 const PORT = process.env.PORT;
-const app = new App();
-app.run(PORT ? parseInt(PORT) : 4000);
+
+startServer();
+
+async function startServer() {
+  const app = new App();
+
+  try {
+    await app.connectDb();
+  } catch (error) {
+    console.error('Can\'t connect to database', error);
+    return;
+  }
+
+  try {
+    await app.init();
+  } catch (error) {
+    console.error('Error with app initiation', error);
+    return;
+  }
+
+  app.run(PORT ? parseInt(PORT, 10) : 4000);
+}

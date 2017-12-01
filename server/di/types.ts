@@ -1,4 +1,5 @@
 const TYPES = {
+  DbConnection: Symbol('DbConnection'),
   SocketIo: Symbol('SocketIo'),
 };
 
