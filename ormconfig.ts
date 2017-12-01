@@ -10,7 +10,7 @@ export const ormConfig: ConnectionOptions = {
   password: 'postgres',
   database: 'testo',
   synchronize: true,
-  logging: false,
+  logging: true,
   entities: [
     User,
   ],

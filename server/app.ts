@@ -2,21 +2,18 @@ import { enableProdMode } from '@angular/core';
 import { renderModuleFactory } from '@angular/platform-server';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
-import { Connection, createConnection, getRepository } from 'typeorm';
+import { Connection, createConnection } from 'typeorm';
+import { InversifyExpressServer } from 'inversify-express-utils';
 
 import * as express from 'express';
 import { join } from 'path';
 import { Server } from 'http';
 import { readFileSync } from 'fs';
 
-import { InversifyExpressServer } from 'inversify-express-utils';
-
-import './controllers/test.controller';
 import { container } from './di/inversify.config';
 import TYPES from './di/types';
 
 import { ormConfig } from '../ormconfig';
-import { User } from './entities/user.entity';
 import { getSocketServer } from './socket/socket-server';
 
 const DIST_FOLDER = join(process.cwd(), 'dist');
@@ -28,8 +25,6 @@ export class App {
 
   async connectDb() {
     const connection = await createConnection(ormConfig as any);
-    const userRepository = getRepository(User);
-
     container.bind<Connection>(TYPES.DbConnection).toConstantValue(connection);
   }
 
