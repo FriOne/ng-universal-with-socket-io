@@ -20,6 +20,11 @@ export class UserDbService {
     const password = md5(rawPassword);
     return this.repository
       .createQueryBuilder()
+      .select([
+        'User.id',
+        'User.email',
+        'User.username',
+      ])
       .where(new Brackets(sqb => {
         sqb.where('User.email = :email', {email: emailOrUserName});
         sqb.orWhere('User.username = :username', {username: emailOrUserName});
