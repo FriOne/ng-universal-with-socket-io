@@ -25,13 +25,13 @@ module.exports = {
   },
   plugins: [
     new webpack.IgnorePlugin(/^uws$/),
-    // new webpack.IgnorePlugin(/^redis$/),
-    // new webpack.IgnorePlugin(/^sqlite3$/),
-    // new webpack.IgnorePlugin(/^oracledb$/),
-    // new webpack.IgnorePlugin(/^mssql$/),
-    // new webpack.IgnorePlugin(/^mysql$/),
-    // new webpack.IgnorePlugin(/^mysql2$/),
-    // new webpack.IgnorePlugin(/^mongodb$/),
+    new webpack.IgnorePlugin(/^redis$/),
+    new webpack.IgnorePlugin(/^sqlite3$/),
+    new webpack.IgnorePlugin(/^oracledb$/),
+    new webpack.IgnorePlugin(/^mssql$/),
+    new webpack.IgnorePlugin(/^mysql$/),
+    new webpack.IgnorePlugin(/^mysql2$/),
+    new webpack.IgnorePlugin(/^mongodb$/),
     new webpack.IgnorePlugin(/pg\.js/),
     new webpack.ContextReplacementPlugin(
       // fixes WARNING Critical dependency: the request of a dependency is an expression
@@ -51,9 +51,9 @@ module.exports = {
       path.join(__dirname, 'client'),
       {}
     ),
-    new webpack.NormalModuleReplacementPlugin(
-      /.*PlatformTools.*/,
-      path.resolve(__dirname, 'server/typeorm/PlatformTools.ts')
-    ),
+    // new webpack.NormalModuleReplacementPlugin(
+    //   /.*PlatformTools.*/,
+    //   path.resolve(__dirname, 'server/typeorm/PlatformTools.ts')
+    // ),
   ]
 }
