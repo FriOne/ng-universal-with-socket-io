@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { TransferHttp } from './modules/shared/services/transfer-http';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +14,7 @@ import { TransferHttp } from './modules/shared/services/transfer-http';
 })
 export class AppComponent {
 
-  constructor(private http: TransferHttp) {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
     this.http.get('http://localhost:4000/api/test').subscribe(response => console.log(response));

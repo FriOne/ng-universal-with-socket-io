@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { TransferHttp } from './transfer-http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class AuthService {
 
   constructor(
-    private http: TransferHttp,
+    private http: HttpClient,
   ) {}
 
   login({emailOrUserName, password}): Observable<any> {

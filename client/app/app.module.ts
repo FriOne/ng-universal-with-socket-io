@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { TransferHttpCacheModule } from '@nguniversal/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgIoConfig, NgIoModule } from 'ng-io';
@@ -19,6 +20,7 @@ export const socketConfig: NgIoConfig = {url: 'http://localhost:4000'};
   imports: [
     NgIoModule.forRoot(socketConfig),
     SharedModule.forRoot(),
+    TransferHttpCacheModule,
     BrowserModule.withServerTransition({appId: 'test-app'}),
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full'},
